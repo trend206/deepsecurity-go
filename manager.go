@@ -74,3 +74,10 @@ func (dsm DSM) EndSession() {
 	}
 
 }
+
+
+func (dsm DSM)HostClearWarningsErrors(hosts []int32) *gowsdlservice.HostClearWarningsErrorsResponse{
+	hce := gowsdlservice.HostClearWarningsErrors{HostIDs:hosts, SID:dsm.SessionID,}
+	response, _ := dsm.SoapClient.HostClearWarningsErrors(&hce)
+	return response
+}
