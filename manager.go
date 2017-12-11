@@ -46,7 +46,7 @@ func authenticate(username string, password string, dsm *DSM, verifySSL bool) {
 	dsm.SoapClient = gowsdlservice.NewManager(dsm.SoapURL, true, &auth)
 
 	if dsm.Tenant != "" {
-		tenantAuth := gowsdlservice.AuthenticateTenant{TenantName: "ACME Corp", Username: "jeff_thorne@trendmicro.com", Password: "Realtime88!"}
+		tenantAuth := gowsdlservice.AuthenticateTenant{TenantName: dsm.Tenant, Username: username, Password: password}
 		str = fmt.Sprintf("{\"dsCredentials\":{\"tenantName\": \"%s\", \"password\": \"%s\", \"userName\": \"%s\"}}", dsm.Tenant, password, username)
 		authResponse, err := dsm.SoapClient.AuthenticateTenant(&tenantAuth)
 		if err != nil {
