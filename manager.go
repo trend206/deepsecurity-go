@@ -42,7 +42,7 @@ func NewDSM(username string, password string, host string, port string, tenant s
 func authenticate(username string, password string, dsm *DSM, verifySSL bool) {
 
 	var str string
-	auth := gowsdlservice.BasicAuth{Login: "admin", Password: "Trend2008!"}
+	auth := gowsdlservice.BasicAuth{Login: username, Password: password}
 	dsm.SoapClient = gowsdlservice.NewManager(dsm.SoapURL, true, &auth)
 
 	if dsm.Tenant != "" {
