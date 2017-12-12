@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"github.com/levigross/grequests"
+
 )
 
 type DSM struct {
@@ -72,7 +73,6 @@ func (dsm DSM) EndSession() {
 	if err != nil {
 		log.Println("Unable to make request", err)
 	}
-
 }
 
 
@@ -81,3 +81,29 @@ func (dsm DSM)HostClearWarningsErrors(hosts []int32) *gowsdlservice.HostClearWar
 	response, _ := dsm.SoapClient.HostClearWarningsErrors(&hce)
 	return response
 }
+
+func (dsm DSM) HostGetStatus(host int32) *gowsdlservice.HostGetStatusResponse {
+	hgs := gowsdlservice.HostGetStatus{Id: host, SID: dsm.SessionID,}
+	response, err := dsm.SoapClient.HostGetStatus(&hgs)
+
+	if err != nil {
+		fmt.Println("in nill", err)
+
+	}
+
+	return response
+}
+
+
+
+func (dsm DSM) HostRecommendationScan(hosts []int32){
+	hrs := gowsdlservice.HostRecommendationScan{HostIDs: hosts, SID: dsm.SessionID}
+	response, err := dsm.SoapClient.HostRecommendationScan(&hrs)
+	if err != nil{
+		log.Println("Error Initiating reccomentation scan:", err)
+	}
+	fmt.Println(response)
+
+}
+
+

@@ -10,6 +10,7 @@ import (
 	"net"
 	"net/http"
 	"time"
+	"fmt"
 )
 
 // against "unused imports"
@@ -5059,7 +5060,7 @@ type MACListTransport struct {
 }
 
 type ComponentInfoTransport struct {
-	XMLName xml.Name `xml:"urn:Manager ComponentInfoTransport"`
+	XMLName xml.Name `xml:"urn:Manager item"`
 
 	*TransportObject
 
@@ -5083,13 +5084,13 @@ type ComponentInfoTransport struct {
 }
 
 type ArrayOfComponentInfoTransport struct {
-	XMLName xml.Name `xml:"urn:Manager ArrayOfComponentInfoTransport"`
+	XMLName xml.Name `xml:"urn:Manager componentInfoTransports"`
 
 	Item []*ComponentInfoTransport `xml:"item,omitempty"`
 }
 
 type ProtectionStatusTransport struct {
-	XMLName xml.Name `xml:"urn:Manager ProtectionStatusTransport"`
+	XMLName xml.Name `xml:"urn:Manager item"`
 
 	*TransportObject
 
@@ -5125,13 +5126,17 @@ type ProtectionStatusTransport struct {
 }
 
 type ArrayOfProtectionStatusTransport struct {
-	XMLName xml.Name `xml:"urn:Manager ArrayOfProtectionStatusTransport"`
+	XMLName xml.Name `xml:"urn:Manager protectionStatusTransports"`
 
 	Item []*ProtectionStatusTransport `xml:"item,omitempty"`
 }
 
+
+
+
+
 type HostStatusTransport struct {
-	XMLName xml.Name `xml:"urn:Manager HostStatusTransport"`
+	XMLName xml.Name `xml:"urn:Manager hostGetStatusReturn"`
 
 	*TransportObject
 
@@ -9544,7 +9549,7 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 		return err
 	}
 
-	log.Println(buffer.String())
+	//log.Println(buffer.String())
 
 	req, err := http.NewRequest("POST", s.url, buffer)
 	if err != nil {
@@ -9581,11 +9586,15 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 		return nil
 	}
 
-	log.Println(string(rawbody))
+	//fmt.Println("PRINTING RAW BODY")
+	//log.Println(string(rawbody))
 	respEnvelope := new(SOAPEnvelope)
+	//fmt.Println(respEnvelope)
+	//fmt.Println(string(rawbody))
 	respEnvelope.Body = SOAPBody{Content: response}
 	err = xml.Unmarshal(rawbody, respEnvelope)
 	if err != nil {
+		fmt.Println("in error", err)
 		return err
 	}
 
