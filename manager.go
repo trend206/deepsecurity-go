@@ -7,7 +7,6 @@ import (
 	"log"
 	"net/http"
 	"github.com/levigross/grequests"
-
 )
 
 type DSM struct {
@@ -105,5 +104,22 @@ func (dsm DSM) HostRecommendationScan(hosts []int32){
 	fmt.Println(response)
 
 }
+
+
+func (dsm DSM)HostRetrieveByName(hostName string) *gowsdlservice.HostTransport{
+
+	hrbn := gowsdlservice.HostRetrieveByName{Hostname: hostName, SID:dsm.SessionID}
+	resp, err := dsm.SoapClient.HostRetrieveByName(&hrbn)
+	if err != nil{
+		log.Println("Error retrieving host:", err)
+	}
+
+	hostTransPort := resp.HostRetrieveByNameReturn
+	return hostTransPort
+}
+
+
+
+
 
 

@@ -4420,7 +4420,7 @@ type ConfigurationTransport struct {
 }
 
 type HostTransport struct {
-	XMLName xml.Name `xml:"urn:Manager HostTransport"`
+	XMLName xml.Name `xml:""`
 
 	*ConfigurationTransport
 
@@ -9590,7 +9590,7 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 	//log.Println(string(rawbody))
 	respEnvelope := new(SOAPEnvelope)
 	//fmt.Println(respEnvelope)
-	//fmt.Println(string(rawbody))
+	////fmt.Println(string(rawbody))
 	respEnvelope.Body = SOAPBody{Content: response}
 	err = xml.Unmarshal(rawbody, respEnvelope)
 	if err != nil {
