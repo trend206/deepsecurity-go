@@ -1844,7 +1844,7 @@ type HostRecommendationRuleIDsRetrieve struct {
 
 	Type_ int32 `xml:"type,omitempty"`
 
-	Onlyunassigned bool `xml:"onlyunassigned,omitempty"`
+	Onlyunassigned string `xml:"onlyunassigned,omitempty"`
 
 	SID string `xml:"sID,omitempty"`
 }
@@ -9589,7 +9589,7 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 	//fmt.Println("PRINTING RAW BODY")
 	//log.Println(string(rawbody))
 	respEnvelope := new(SOAPEnvelope)
-	//fmt.Println(respEnvelope)
+	fmt.Println(respEnvelope)
 	////fmt.Println(string(rawbody))
 	respEnvelope.Body = SOAPBody{Content: response}
 	err = xml.Unmarshal(rawbody, respEnvelope)

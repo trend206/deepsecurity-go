@@ -118,6 +118,19 @@ func (dsm DSM)HostRetrieveByName(hostName string) *gowsdlservice.HostTransport{
 	return hostTransPort
 }
 
+//onlyUnassigned is really bool which is not working so pass string True or False
+func (dsm DSM) HostRecommendationRuleIDsRetrieve(hostID int, ruleType int, onlyUnassigned string)[]int32{
+
+	hrrir := gowsdlservice.HostRecommendationRuleIDsRetrieve{ HostID:int32(hostID), Type_: int32(ruleType), Onlyunassigned: onlyUnassigned, SID:dsm.SessionID}
+	resp, err := dsm.SoapClient.HostRecommendationRuleIDsRetrieve(&hrrir)
+	if err != nil{
+		log.Println("Error retrieving host:", err)
+	}
+
+	return resp.HostRecommendationRuleIDsRetrieveReturn
+
+}
+
 
 
 
