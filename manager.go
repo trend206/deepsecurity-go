@@ -132,6 +132,36 @@ func (dsm DSM) HostRecommendationRuleIDsRetrieve(hostID int, ruleType int, onlyU
 }
 
 
+func (dsm DSM) HostDetailRetrieve(hostID int, hostGroup int, securityProfileID int, hostType string, hostDetailLevel string) *gowsdlservice.HostDetailTransport{
+	if hostDetailLevel == "" {
+		hostDetailLevel = "HIGH"
+	}
+
+	var hdl gowsdlservice.EnumHostDetailLevel = ""
+
+	if hostDetailLevel == "HIGH"{
+		hdl = gowsdlservice.EnumHostDetailLevelHIGH
+	}else if hostDetailLevel == "MEDIUM" {
+		hdl = gowsdlservice.EnumHostDetailLevelMEDIUM
+	}else{
+		hdl = gowsdlservice.EnumHostDetailLevelLOW
+	}
+
+	var hostType2 gowsdlservice.EnumHostFilterType  = "HOSTS_IN_GROUP_AND_ALL_SUBGROUPS"
+
+	hft := gowsdlservice.HostFilterTransport{HostGroupID: int32(hostGroup), HostID: int32(hostID), SecurityProfileID: int32(securityProfileID), Type_: &hostType2, }
+	hdr := gowsdlservice.HostDetailRetrieve{HostFilter:&hft, HostDetailLevel:&hdl, SID: dsm.SessionID,}
+	resp, err := dsm.SoapClient.HostDetailRetrieve(&hdr)
+	if err != nil{
+		log.Println("Error retrieving host:", err)
+	}
+
+	return resp.HostDetailRetrieveReturn[0]
+
+}
+
+
+
 
 
 

@@ -4191,7 +4191,7 @@ type HostDetailRetrieveByExternal struct {
 	ExternalFilter *ExternalFilterTransport `xml:"externalFilter,omitempty"`
 
 	HostDetailLevel *EnumHostDetailLevel `xml:"hostDetailLevel,omitempty"`
-
+	EnumHostDetailLevel
 	SID string `xml:"sID,omitempty"`
 }
 
@@ -4440,19 +4440,19 @@ type HostTransport struct {
 }
 
 type ArrayOf_xsd_int struct {
-	XMLName xml.Name `xml:"urn:Manager ArrayOf_xsd_int"`
+	XMLName xml.Name `xml:""`
 
 	Item []int32 `xml:"item,omitempty"`
 }
 
 type ArrayOf_xsd_string struct {
-	XMLName xml.Name `xml:"urn:Manager ArrayOf_xsd_string"`
+	XMLName xml.Name `xml:""`
 
 	Item []string `xml:"item,omitempty"`
 }
 
 type HostInterfaceTransport struct {
-	XMLName xml.Name `xml:"urn:Manager HostInterfaceTransport"`
+	XMLName xml.Name `xml:""`
 
 	*HostTransport
 
@@ -4470,13 +4470,13 @@ type HostInterfaceTransport struct {
 }
 
 type ArrayOfHostInterfaceTransport struct {
-	XMLName xml.Name `xml:"urn:Manager ArrayOfHostInterfaceTransport"`
+	XMLName xml.Name `xml:""`
 
 	Item []*HostInterfaceTransport `xml:"item,omitempty"`
 }
 
 type HostDetailTransport struct {
-	XMLName xml.Name `xml:"urn:Manager HostDetailTransport"`
+	XMLName xml.Name `xml:""`
 
 	*HostTransport
 
@@ -4516,23 +4516,23 @@ type HostDetailTransport struct {
 
 	HostLight *EnumHostLight `xml:"hostLight,omitempty"`
 
-	LastAnitMalwareScheduledScan time.Time `xml:"lastAnitMalwareScheduledScan,omitempty"`
+	LastAnitMalwareScheduledScan string `xml:"lastAnitMalwareScheduledScan,omitempty"`
 
-	LastAntiMalwareEvent time.Time `xml:"lastAntiMalwareEvent,omitempty"`
+	LastAntiMalwareEvent string `xml:"lastAntiMalwareEvent,omitempty"`
 
-	LastAntiMalwareManualScan time.Time `xml:"lastAntiMalwareManualScan,omitempty"`
+	LastAntiMalwareManualScan string `xml:"lastAntiMalwareManualScan,omitempty"`
 
-	LastDpiEvent time.Time `xml:"lastDpiEvent,omitempty"`
+	LastDpiEvent string `xml:"lastDpiEvent,omitempty"`
 
-	LastFirewallEvent time.Time `xml:"lastFirewallEvent,omitempty"`
+	LastFirewallEvent string `xml:"lastFirewallEvent,omitempty"`
 
 	LastIPUsed string `xml:"lastIPUsed,omitempty"`
 
-	LastIntegrityMonitoringEvent time.Time `xml:"lastIntegrityMonitoringEvent,omitempty"`
+	LastIntegrityMonitoringEvent string `xml:"lastIntegrityMonitoringEvent,omitempty"`
 
-	LastLogInspectionEvent time.Time `xml:"lastLogInspectionEvent,omitempty"`
+	LastLogInspectionEvent string `xml:"lastLogInspectionEvent,omitempty"`
 
-	LastWebReputationEvent time.Time `xml:"lastWebReputationEvent,omitempty"`
+	LastWebReputationEvent string `xml:"lastWebReputationEvent,omitempty"`
 
 	Light int32 `xml:"light,omitempty"`
 
@@ -4546,13 +4546,13 @@ type HostDetailTransport struct {
 
 	OverallIntegrityMonitoringStatus string `xml:"overallIntegrityMonitoringStatus,omitempty"`
 
-	OverallLastRecommendationScan time.Time `xml:"overallLastRecommendationScan,omitempty"`
+	OverallLastRecommendationScan string `xml:"overallLastRecommendationScan,omitempty"`
 
-	OverallLastSuccessfulCommunication time.Time `xml:"overallLastSuccessfulCommunication,omitempty"`
+	OverallLastSuccessfulCommunication string `xml:"overallLastSuccessfulCommunication,omitempty"`
 
-	OverallLastSuccessfulUpdate time.Time `xml:"overallLastSuccessfulUpdate,omitempty"`
+	OverallLastSuccessfulUpdate string `xml:"overallLastSuccessfulUpdate,omitempty"`
 
-	OverallLastUpdateRequired time.Time `xml:"overallLastUpdateRequired,omitempty"`
+	OverallLastUpdateRequired string `xml:"overallLastUpdateRequired,omitempty"`
 
 	OverallLogInspectionStatus string `xml:"overallLogInspectionStatus,omitempty"`
 
@@ -4584,7 +4584,7 @@ type TimeFilterTransport struct {
 }
 
 type HostFilterTransport struct {
-	XMLName xml.Name `xml:"urn:Manager HostFilterTransport"`
+	XMLName xml.Name `xml:""`
 
 	HostGroupID int32 `xml:"hostGroupID,omitempty"`
 
@@ -9586,11 +9586,12 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 		return nil
 	}
 
+	fmt.Println(request)
 	//fmt.Println("PRINTING RAW BODY")
 	//log.Println(string(rawbody))
 	respEnvelope := new(SOAPEnvelope)
 	fmt.Println(respEnvelope)
-	////fmt.Println(string(rawbody))
+	fmt.Println(string(rawbody))
 	respEnvelope.Body = SOAPBody{Content: response}
 	err = xml.Unmarshal(rawbody, respEnvelope)
 	if err != nil {
