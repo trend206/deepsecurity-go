@@ -81,7 +81,7 @@ func (dsm DSM)HostClearWarningsErrors(hosts []int32) *gowsdlservice.HostClearWar
 	return response
 }
 
-func (dsm DSM) HostGetStatus(host int32) *gowsdlservice.HostGetStatusResponse {
+func (dsm DSM) HostGetStatus(host int32) *gowsdlservice.HostStatusTransport {
 	hgs := gowsdlservice.HostGetStatus{Id: host, SID: dsm.SessionID,}
 	response, err := dsm.SoapClient.HostGetStatus(&hgs)
 
@@ -90,7 +90,7 @@ func (dsm DSM) HostGetStatus(host int32) *gowsdlservice.HostGetStatusResponse {
 
 	}
 
-	return response
+	return response.HostGetStatusReturn
 }
 
 
