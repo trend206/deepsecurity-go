@@ -4570,17 +4570,17 @@ type HostDetailTransport struct {
 }
 
 type TimeFilterTransport struct {
-	XMLName xml.Name `xml:"urn:Manager TimeFilterTransport"`
+	XMLName xml.Name `xml:""`
 
 	*TransportObject
 
-	RangeFrom time.Time `xml:"rangeFrom,omitempty"`
+	RangeFrom string `xml:"rangeFrom,omitempty"`
 
-	RangeTo time.Time `xml:"rangeTo,omitempty"`
+	RangeTo string `xml:"rangeTo,omitempty"`
 
-	SpecificTime time.Time `xml:"specificTime,omitempty"`
+	SpecificTime string `xml:"specificTime,omitempty"`
 
-	Type_ *EnumTimeFilterType `xml:"type,omitempty"`
+	Type_ string `xml:"type,omitempty"`
 }
 
 type HostFilterTransport struct {
@@ -4592,15 +4592,15 @@ type HostFilterTransport struct {
 
 	SecurityProfileID int32 `xml:"securityProfileID,omitempty"`
 
-	Type_ *EnumHostFilterType `xml:"type,omitempty"`
+	Type_ string `xml:"type,omitempty"`
 }
 
 type IDFilterTransport struct {
-	XMLName xml.Name `xml:"urn:Manager IDFilterTransport"`
+	XMLName xml.Name `xml:""`
 
 	Id int32 `xml:"id,omitempty"`
 
-	Operator *EnumOperator `xml:"operator,omitempty"`
+	Operator string `xml:"operator,omitempty"`
 }
 
 type TruncatableListTransport struct {
@@ -4612,7 +4612,7 @@ type TruncatableListTransport struct {
 }
 
 type SystemEventTransport struct {
-	XMLName xml.Name `xml:"urn:Manager SystemEventTransport"`
+	XMLName xml.Name `xml:""`
 
 	*TransportObject
 
@@ -4644,13 +4644,13 @@ type SystemEventTransport struct {
 }
 
 type ArrayOfSystemEventTransport struct {
-	XMLName xml.Name `xml:"urn:Manager ArrayOfSystemEventTransport"`
+	XMLName xml.Name `xml:""`
 
 	Item []*SystemEventTransport `xml:"item,omitempty"`
 }
 
 type SystemEventListTransport struct {
-	XMLName xml.Name `xml:"urn:Manager SystemEventListTransport"`
+	XMLName xml.Name `xml:""`
 
 	*TruncatableListTransport
 

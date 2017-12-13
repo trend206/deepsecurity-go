@@ -97,11 +97,10 @@ func (dsm DSM) HostGetStatus(host int32) *gowsdlservice.HostStatusTransport {
 
 func (dsm DSM) HostRecommendationScan(hosts []int32){
 	hrs := gowsdlservice.HostRecommendationScan{HostIDs: hosts, SID: dsm.SessionID}
-	response, err := dsm.SoapClient.HostRecommendationScan(&hrs)
+	_, err := dsm.SoapClient.HostRecommendationScan(&hrs)
 	if err != nil{
 		log.Println("Error Initiating reccomentation scan:", err)
 	}
-	fmt.Println(response)
 
 }
 
@@ -147,9 +146,9 @@ func (dsm DSM) HostDetailRetrieve(hostID int, hostGroup int, securityProfileID i
 		hdl = gowsdlservice.EnumHostDetailLevelLOW
 	}
 
-	var hostType2 gowsdlservice.EnumHostFilterType  = "HOSTS_IN_GROUP_AND_ALL_SUBGROUPS"
+	var hostType2 string  = "HOSTS_IN_GROUP_AND_ALL_SUBGROUPS"
 
-	hft := gowsdlservice.HostFilterTransport{HostGroupID: int32(hostGroup), HostID: int32(hostID), SecurityProfileID: int32(securityProfileID), Type_: &hostType2, }
+	hft := gowsdlservice.HostFilterTransport{HostGroupID: int32(hostGroup), HostID: int32(hostID), SecurityProfileID: int32(securityProfileID), Type_: hostType2, }
 	hdr := gowsdlservice.HostDetailRetrieve{HostFilter:&hft, HostDetailLevel:&hdl, SID: dsm.SessionID,}
 	resp, err := dsm.SoapClient.HostDetailRetrieve(&hdr)
 	if err != nil{
@@ -161,6 +160,23 @@ func (dsm DSM) HostDetailRetrieve(hostID int, hostGroup int, securityProfileID i
 }
 
 
+//does not currently implement custom time ranges
+//timeType "LAST_HOUR", eventOperator="GREATER_THAN", eventID=1
+func (dsm DSM)SystemEventRetrieve(timeType string, hostID int, hostGroupID int, securityProfileId int, hostType string, eventID int,
+	                              includeNonHostEvents bool, eventOperator string) []*gowsdlservice.SystemEventTransport{
+
+
+	 tft := gowsdlservice.TimeFilterTransport{RangeFrom: "", RangeTo: "", SpecificTime: "", Type_: timeType}
+	 hft := gowsdlservice.HostFilterTransport{HostGroupID: int32(hostGroupID), HostID: int32(hostID), SecurityProfileID: int32(securityProfileId), Type_: hostType}
+	 idf := gowsdlservice.IDFilterTransport{Id: int32(eventID), Operator: eventOperator}
+	 ser := gowsdlservice.SystemEventRetrieve{TimeFilter:&tft, HostFilter: &hft, EventIdFilter: &idf, IncludeNonHostEvents: includeNonHostEvents, SID: dsm.SessionID}
+	 resp, err := dsm.SoapClient.SystemEventRetrieve(&ser)
+	if err != nil{
+		log.Println("Error retrieving system event:", err)
+	}
+
+	return resp.SystemEventRetrieveReturn.SystemEvents.Item
+}
 
 
 
