@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"github.com/levigross/grequests"
+	"errors"
 )
 
 type DSM struct {
@@ -117,8 +118,8 @@ func (dsm DSM)HostRetrieveByName(hostName string) *gowsdlservice.HostTransport{
 	return hostTransPort
 }
 
-//onlyUnassigned is really bool which is not working so pass string True or False
-func (dsm DSM) HostRecommendationRuleIDsRetrieve(hostID int, ruleType int, onlyUnassigned string)[]int32{
+//onlyUnassigned is really bool which is not working so pass string true or false
+func (dsm DSM) HostRecommendationRuleIDsRetrieve(hostID int, ruleType int, onlyUnassigned string) ([]int32, error){
 
 	hrrir := gowsdlservice.HostRecommendationRuleIDsRetrieve{ HostID:int32(hostID), Type_: int32(ruleType), Onlyunassigned: onlyUnassigned, SID:dsm.SessionID}
 	resp, err := dsm.SoapClient.HostRecommendationRuleIDsRetrieve(&hrrir)
@@ -126,7 +127,12 @@ func (dsm DSM) HostRecommendationRuleIDsRetrieve(hostID int, ruleType int, onlyU
 		log.Println("Error retrieving host:", err)
 	}
 
-	return resp.HostRecommendationRuleIDsRetrieveReturn
+	if resp == nil {
+		err = errors.New(fmt.Sprintf("Error retrieving host with id %d:", hostID))
+		return nil, err
+	}else {
+		return resp.HostRecommendationRuleIDsRetrieveReturn, err
+	}
 
 }
 
@@ -178,6 +184,22 @@ func (dsm DSM)SystemEventRetrieve(timeType string, hostID int, hostGroupID int, 
 	return resp.SystemEventRetrieveReturn.SystemEvents.Item
 }
 
+
+func (dsm DSM)DPIRuleRetrieve(ruleID int) (*gowsdlservice.DPIRuleTransport, error){
+	dpiRuleRetrieve := gowsdlservice.DPIRuleRetrieve{Id:int32(ruleID), SID: dsm.SessionID}
+	resp, err := dsm.SoapClient.DPIRuleRetrieve(&dpiRuleRetrieve)
+	if err != nil{
+		log.Println("Error could not retrieve dpi rule:", err)
+	}
+
+
+	if resp == nil {
+		err = errors.New(fmt.Sprintf("Error retrieving rule with id %d:", ruleID))
+		return nil, err
+	}else {
+		return resp.DPIRuleRetrieveReturn, err
+	}
+}
 
 
 

@@ -4846,7 +4846,7 @@ type EditableSettingStoredTransport struct {
 }
 
 type DPIRuleTransport struct {
-	XMLName xml.Name `xml:"urn:Manager DPIRuleTransport"`
+	XMLName xml.Name `xml:""`
 
 	*ConfigurationTransport
 
