@@ -4894,7 +4894,7 @@ type DPIRuleTransport struct {
 
 	ScheduleID int32 `xml:"scheduleID,omitempty"`
 
-	Severity *EnumDPIRuleSeverity `xml:"severity,omitempty"`
+	Severity string `xml:"severity,omitempty"`
 
 	SignatureAction *EnumDPIRuleAction `xml:"signatureAction,omitempty"`
 
