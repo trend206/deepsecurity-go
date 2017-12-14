@@ -152,7 +152,7 @@ func (dsm DSM) HostDetailRetrieve(hostID int, hostGroup int, securityProfileID i
 		hdl = gowsdlservice.EnumHostDetailLevelLOW
 	}
 
-	var hostType2 string  = "HOSTS_IN_GROUP_AND_ALL_SUBGROUPS"
+	var hostType2 string  = "SPECIFIC_HOST"
 
 	hft := gowsdlservice.HostFilterTransport{HostGroupID: int32(hostGroup), HostID: int32(hostID), SecurityProfileID: int32(securityProfileID), Type_: hostType2, }
 	hdr := gowsdlservice.HostDetailRetrieve{HostFilter:&hft, HostDetailLevel:&hdl, SID: dsm.SessionID,}
