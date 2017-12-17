@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"github.com/levigross/grequests"
 	"errors"
+	"encoding/xml"
 )
 
 type DSM struct {
@@ -73,6 +74,7 @@ func (dsm DSM) EndSession() {
 	if err != nil {
 		log.Println("Unable to make request", err)
 	}
+
 }
 
 
@@ -214,5 +216,14 @@ func (dsm DSM)HostGroupRetrieveAll() []*gowsdlservice.HostGroupRetrieveAllReturn
 }
 
 
+func (dsm DSM)HostMoveToHostGroup(hostIDs []int32, hostGroupID int32) *gowsdlservice.HostMoveToHostGroupResponse{
+	hmtg := gowsdlservice.HostMoveToHostGroup{HostIDs:hostIDs, HostGroupID: hostGroupID, SID: dsm.SessionID}
+	resp, err := dsm.SoapClient.HostMoveToHostGroup(&hmtg)
 
+	if err != nil{
+		log.Println("Error moving hosts to group. None moved as:", err)
+	}
+
+	return resp
+}
 
