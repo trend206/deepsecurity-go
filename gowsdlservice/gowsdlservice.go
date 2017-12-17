@@ -2861,10 +2861,16 @@ type HostGroupRetrieveAll struct {
 	SID string `xml:"sID,omitempty"`
 }
 
-type HostGroupRetrieveAllResponse struct {
+/*type HostGroupRetrieveAllResponse struct {
 	XMLName xml.Name `xml:"urn:Manager hostGroupRetrieveAllResponse"`
 
 	HostGroupRetrieveAllReturn []*HostGroupTransport `xml:"hostGroupRetrieveAllReturn,omitempty"`
+}*/
+
+type HostGroupRetrieveAllResponse struct {
+	XMLName xml.Name `xml:"urn:Manager hostGroupRetrieveAllResponse"`
+	HostGroupRetrieveAllReturn []*HostGroupRetrieveAllReturnTransport `xml:"hostGroupRetrieveAllReturn,omitempty"`
+
 }
 
 type FirewallRuleRetrieveAll struct {
@@ -4812,6 +4818,18 @@ type HostGroupTransport struct {
 
 	*ConfigurationTransport
 
+	External bool `xml:"external,omitempty"`
+
+	ExternalID string `xml:"externalID,omitempty"`
+
+	ParentGroupID int32 `xml:"parentGroupID,omitempty"`
+}
+
+type HostGroupRetrieveAllReturnTransport  struct {
+	XMLName xml.Name `xml:"urn:Manager hostGroupRetrieveAllReturn"`
+
+	*ConfigurationTransport
+	ID int `xml:"ID,omitempty"`
 	External bool `xml:"external,omitempty"`
 
 	ExternalID string `xml:"externalID,omitempty"`

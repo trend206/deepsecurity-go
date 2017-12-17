@@ -202,5 +202,17 @@ func (dsm DSM)DPIRuleRetrieve(ruleID int) (*gowsdlservice.DPIRuleTransport, erro
 }
 
 
+func (dsm DSM)HostGroupRetrieveAll() []*gowsdlservice.HostGroupRetrieveAllReturnTransport{
+
+	hgra := gowsdlservice.HostGroupRetrieveAll{SID: dsm.SessionID}
+	resp, err := dsm.SoapClient.HostGroupRetrieveAll(&hgra)
+	if err != nil{
+		log.Println("Error retreiving host group all:", err)
+	}
+
+	return resp.HostGroupRetrieveAllReturn
+}
+
+
 
 
