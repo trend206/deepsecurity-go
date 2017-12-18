@@ -1,3 +1,7 @@
+//Several changes have been made to this file from the auto generated gowsdl
+// unfortunately several auto generated methods and structs to not map correctly to wsdl definition.
+// You will need to use this .go file. This could cause issues if an changes are make to the signatures
+// of exisi
 package gowsdlservice
 
 import (
@@ -4814,10 +4818,10 @@ type StatefulConfigurationTransport struct {
 }
 
 type HostGroupTransport struct {
-	XMLName xml.Name `xml:"urn:Manager HostGroupTransport"`
+	XMLName xml.Name `xml:""`
 
 	*ConfigurationTransport
-
+	Name string `xml:"name,omitempty"`
 	External bool `xml:"external,omitempty"`
 
 	ExternalID string `xml:"externalID,omitempty"`
@@ -9604,12 +9608,12 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 		return nil
 	}
 
-	//fmt.Println(request)
-	//fmt.Println("PRINTING RAW BODY")
-	//log.Println(string(rawbody))
+	fmt.Println(request)
+	fmt.Println("PRINTING RAW BODY")
+	log.Println(string(rawbody))
 	respEnvelope := new(SOAPEnvelope)
-	//fmt.Println(respEnvelope)
-	//fmt.Println(string(rawbody))
+	fmt.Println(respEnvelope)
+	fmt.Println(string(rawbody))
 	respEnvelope.Body = SOAPBody{Content: response}
 	err = xml.Unmarshal(rawbody, respEnvelope)
 	if err != nil {

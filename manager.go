@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"github.com/levigross/grequests"
 	"errors"
-	"encoding/xml"
 )
 
 type DSM struct {
@@ -225,5 +224,23 @@ func (dsm DSM)HostMoveToHostGroup(hostIDs []int32, hostGroupID int32) *gowsdlser
 	}
 
 	return resp
+}
+
+
+func (dsm DSM) HostGroupCreate(name string, external bool, externalID string, parentGroupId int32) (*gowsdlservice.HostGroupTransport, error){
+	hgt := gowsdlservice.HostGroupTransport{Name:name, External: external, ExternalID: externalID}
+	if parentGroupId != -1{
+		hgt.ParentGroupID = parentGroupId
+	}
+	hgc := gowsdlservice.HostGroupCreate{HostGroup:&hgt, SID: dsm.SessionID}
+	resp, err := dsm.SoapClient.HostGroupCreate(&hgc)
+	if err != nil{
+		log.Println("Error creating host group:", err)
+		return nil, err
+	}else{
+		return resp.HostGroupCreateReturn, nil
+	}
+
+
 }
 
