@@ -9608,12 +9608,12 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 		return nil
 	}
 
-	fmt.Println(request)
-	fmt.Println("PRINTING RAW BODY")
-	log.Println(string(rawbody))
+	//fmt.Println(request)
+	//fmt.Println("PRINTING RAW BODY")
+	//log.Println(string(rawbody))
 	respEnvelope := new(SOAPEnvelope)
-	fmt.Println(respEnvelope)
-	fmt.Println(string(rawbody))
+	//fmt.Println(respEnvelope)
+	//fmt.Println(string(rawbody))
 	respEnvelope.Body = SOAPBody{Content: response}
 	err = xml.Unmarshal(rawbody, respEnvelope)
 	if err != nil {
