@@ -244,3 +244,28 @@ func (dsm DSM) HostGroupCreate(name string, external bool, externalID string, pa
 
 }
 
+func (dsm DSM) HostRetrieveAll() []*gowsdlservice.HostTransport{
+	hra := gowsdlservice.HostRetrieveAll{SID:dsm.SessionID}
+	resp, err := dsm.SoapClient.HostRetrieveAll(&hra)
+	if err != nil{
+		log.Println("Error retrieving all hosts:", err)
+	}
+
+	return resp.HostRetrieveAllReturn
+}
+
+
+func (dsm DSM) HostRetrieveByHostGroup(hostGroupId int) ([]*gowsdlservice.HostTransport){
+	hrgh := gowsdlservice.HostRetrieveByHostGroup{HostGroupID:int32(hostGroupId), SID:dsm.SessionID}
+	resp, err  := dsm.SoapClient.HostRetrieveByHostGroup(&hrgh)
+	if err != nil{
+		log.Println("Error retrieving hosts by group:", err)
+		return nil
+	}else{
+		return resp.HostRetrieveByHostGroupReturn
+	}
+
+
+
+}
+
