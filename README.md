@@ -2,7 +2,8 @@
 
 Status: Experimental<br/>
 
-##Installation
+Installation
+----
 
 Install: go get -u github.com/jeffthorne/deepsecurity-go
 
