@@ -254,18 +254,16 @@ func (dsm DSM) HostRetrieveAll() []*gowsdlservice.HostTransport{
 	return resp.HostRetrieveAllReturn
 }
 
-
-func (dsm DSM) HostRetrieveByHostGroup(hostGroupId int) ([]*gowsdlservice.HostTransport){
+// HostRetrieveByHostGroup retrieves all hosts in a dsm group by id.
+// It returns a slice of HostTransport obejcts if group ID is found or an empty list
+func (dsm DSM) HostRetrieveByHostGroup(hostGroupId int) ([]*gowsdlservice.HostTransport, error){
 	hrgh := gowsdlservice.HostRetrieveByHostGroup{HostGroupID:int32(hostGroupId), SID:dsm.SessionID}
 	resp, err  := dsm.SoapClient.HostRetrieveByHostGroup(&hrgh)
 	if err != nil{
-		log.Println("Error retrieving hosts by group:", err)
-		return nil
+		return make([]*gowsdlservice.HostTransport, 0), errors.New("Host Group was not found.")
 	}else{
-		return resp.HostRetrieveByHostGroupReturn
+		return resp.HostRetrieveByHostGroupReturn, nil
 	}
-
-
 
 }
 
