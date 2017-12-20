@@ -244,14 +244,15 @@ func (dsm DSM) HostGroupCreate(name string, external bool, externalID string, pa
 
 }
 
-func (dsm DSM) HostRetrieveAll() []*gowsdlservice.HostTransport{
+func (dsm DSM) HostRetrieveAll() ([]*gowsdlservice.HostTransport, error){
 	hra := gowsdlservice.HostRetrieveAll{SID:dsm.SessionID}
 	resp, err := dsm.SoapClient.HostRetrieveAll(&hra)
 	if err != nil{
-		log.Println("Error retrieving all hosts:", err)
+		return make([]*gowsdlservice.HostTransport, 0), errors.New("Unable to retrieve all hosts.")
+	}else{
+		return resp.HostRetrieveAllReturn, nil
 	}
 
-	return resp.HostRetrieveAllReturn
 }
 
 // HostRetrieveByHostGroup retrieves all hosts in a dsm group by id.
