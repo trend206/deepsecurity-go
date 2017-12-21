@@ -6,7 +6,7 @@ import (
 )
 
 func main(){
-	dsm, err := deepsecurity.NewDSM("masteradmin", "trendmicro", "10.45.66.20", "4119", "", false)
+	dsm, err := deepsecurity.NewDSM("masteradmin", "password", "101.45.66.20", "4119", "", false)
 
 	if err != nil{
 		fmt.Println("Error found: ", err)
