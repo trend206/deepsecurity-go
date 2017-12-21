@@ -1,5 +1,4 @@
-// package deepsecurity provides a DSM struct to interface with and provides an abstraction
-// over Deep Security's REST and SOAP APIs
+// package deepsecurity provides a DSM struct to interface with Deep Security's REST and SOAP APIs
 package deepsecurity
 
 import (
