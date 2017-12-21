@@ -10,7 +10,7 @@ import (
 
 func main(){
 
-	//Authenticate against an on-prem DSM
+	//Eample #1: Authenticate against an on-prem DSM
 	dsm, err := deepsecurity.NewDSM("admin", "password", "10.45.66.20", "4119", "", false)
 
 	if err != nil{
