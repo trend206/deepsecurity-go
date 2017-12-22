@@ -95,18 +95,6 @@ func (dsm DSM) EndSession() {
 
 
 
-func (dsm DSM)HostRetrieveByName(hostName string) *gowsdlservice.HostTransport{
-
-	hrbn := gowsdlservice.HostRetrieveByName{Hostname: hostName, SID:dsm.SessionID}
-	resp, err := dsm.SoapClient.HostRetrieveByName(&hrbn)
-	if err != nil{
-		log.Println("Error retrieving host:", err)
-	}
-
-	hostTransPort := resp.HostRetrieveByNameReturn
-	return hostTransPort
-}
-
 //onlyUnassigned is really bool which is not working so pass string true or false
 func (dsm DSM) HostRecommendationRuleIDsRetrieve(hostID int, ruleType int, onlyUnassigned string) ([]int32, error){
 
@@ -291,4 +279,18 @@ func (dsm DSM) HostRecommendationScan(hosts []int32) error{
 		return nil
 	}
 
+}
+
+
+// HostRetrieveByName retrieves a host by name
+// returns nil if error or host not found
+func (dsm DSM)HostRetrieveByName(hostName string) (*gowsdlservice.HostTransport, error) {
+	hrbn := gowsdlservice.HostRetrieveByName{Hostname: hostName, SID:dsm.SessionID}
+	resp, err := dsm.SoapClient.HostRetrieveByName(&hrbn)
+	if err != nil || resp.HostRetrieveByNameReturn.Platform == "" {
+		return nil, errors.New(fmt.Sprintf("Unable to retrieve host %s", hostName))
+	}else{
+		hostTransPort := resp.HostRetrieveByNameReturn
+		return hostTransPort, nil
+	}
 }
