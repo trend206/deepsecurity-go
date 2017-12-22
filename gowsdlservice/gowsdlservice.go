@@ -1,7 +1,6 @@
-//Several changes have been made to this file from the auto generated gowsdl
-// unfortunately several auto generated methods and structs to not map correctly to wsdl definition.
-// You will need to use this .go file. This could cause issues if an changes are make to the signatures
-// of exisi
+// Several changes have been made to this file from the auto generated gowsdl.
+// Unfortunately many auto generated methods and structs do not map correctly to wsdl definition.
+// You will need to use this .go file.
 package gowsdlservice
 
 import (
