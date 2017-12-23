@@ -182,16 +182,6 @@ func (dsm DSM)DPIRuleRetrieve(ruleID int) (*gowsdlservice.DPIRuleTransport, erro
 
 
 
-func (dsm DSM)HostMoveToHostGroup(hostIDs []int32, hostGroupID int32) *gowsdlservice.HostMoveToHostGroupResponse{
-	hmtg := gowsdlservice.HostMoveToHostGroup{HostIDs:hostIDs, HostGroupID: hostGroupID, SID: dsm.SessionID}
-	resp, err := dsm.SoapClient.HostMoveToHostGroup(&hmtg)
-
-	if err != nil{
-		log.Println("Error moving hosts to group. None moved as:", err)
-	}
-
-	return resp
-}
 
 
 func (dsm DSM) HostGroupCreate(name string, external bool, externalID string, parentGroupId int32) (*gowsdlservice.HostGroupTransport, error){
@@ -293,4 +283,18 @@ func (dsm DSM)HostRetrieveByName(hostName string) (*gowsdlservice.HostTransport,
 		hostTransPort := resp.HostRetrieveByNameReturn
 		return hostTransPort, nil
 	}
+}
+
+// HostMoveToHostGroup moves list of hosts or single host to host group
+// returns nil if error
+func (dsm DSM)HostMoveToHostGroup(hostIDs []int32, hostGroupID int32) (*gowsdlservice.HostMoveToHostGroupResponse, error){
+	hmtg := gowsdlservice.HostMoveToHostGroup{HostIDs:hostIDs, HostGroupID: hostGroupID, SID: dsm.SessionID}
+	resp, err := dsm.SoapClient.HostMoveToHostGroup(&hmtg)
+
+	if err != nil{
+		return nil, errors.New(fmt.Sprint("Unable to move hosts to host group: ", err))
+	}else{
+		return resp, nil
+	}
+
 }
