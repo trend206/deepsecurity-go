@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/jeffthorne/deepsecurity-go"
 	"fmt"
+	"github.com/jeffthorne/deepsecurity-go"
 )
 
+func main() {
 
-func main(){
 
 	// Authenticate against an on-prem DSM
 	dsm, err := deepsecurity.NewDSM("username", "Password1!", "127.0.0.1", "4119", "", false)
@@ -18,13 +18,16 @@ func main(){
 	}
 
 
-	//Example 1 - Retrieve host by name
-	webServer, err := dsm.HostRetrieveByName("web_ap0199")
-	if webServer != nil{
-		fmt.Printf("%s:%s\n", webServer.Name, webServer.Platform)
+	resp, err := dsm.HostGroupCreate("k8s_test", false,"0",-1)
+
+	if err != nil{
+		fmt.Println("Error found")
 	}else{
-		fmt.Println(err)
+		fmt.Printf("%#v", resp)
 	}
+
+
+
 
 
 }

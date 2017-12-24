@@ -183,12 +183,18 @@ func (dsm DSM)DPIRuleRetrieve(ruleID int) (*gowsdlservice.DPIRuleTransport, erro
 
 
 
-
+// HostGroupCreate creates a host group. Pass -1 for parentGroupId if not associated with a parent group.
+// If external is false externalID is ignored.
 func (dsm DSM) HostGroupCreate(name string, external bool, externalID string, parentGroupId int32) (*gowsdlservice.HostGroupTransport, error){
-	hgt := gowsdlservice.HostGroupTransport{Name:name, External: external, ExternalID: externalID}
+	hgt := gowsdlservice.HostGroupTransport{Name:name, External: external}
 	if parentGroupId != -1{
 		hgt.ParentGroupID = parentGroupId
 	}
+
+	if external{
+		hgt.ExternalID = externalID
+	}
+
 	hgc := gowsdlservice.HostGroupCreate{HostGroup:&hgt, SID: dsm.SessionID}
 	resp, err := dsm.SoapClient.HostGroupCreate(&hgc)
 	if err != nil{
@@ -225,7 +231,7 @@ func (dsm DSM) HostRetrieveByHostGroup(hostGroupId int) ([]*gowsdlservice.HostTr
 	}
 }
 
-// HostGroupRetrieveAll retreives all hostgroups
+// HostGroupRetrieveAll retrieves all hostgroups
 // returns empty list if error or none found
 func (dsm DSM)HostGroupRetrieveAll() ([]*gowsdlservice.HostGroupRetrieveAllReturnTransport, error){
 	hgra := gowsdlservice.HostGroupRetrieveAll{SID: dsm.SessionID}
