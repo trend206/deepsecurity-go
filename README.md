@@ -18,3 +18,4 @@ Examples
 * Retrieve Host Info - [examples/gethost.go](examples/gethost.go)
 * Move Host/s to Host Group - [examples/movetohostgroup.go](examples/movetohostgroup.go)
 * Create a Host Group - [examples/hostgroupcreate.go](examples/hostgroupcreate.go)
+* Concurrently run DS recommendation scans in goroutines [examples/recoscan.go](examples/recoscan.go)
