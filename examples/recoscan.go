@@ -12,7 +12,7 @@ import (
 func main() {
 
 	// Authenticate against DsaS
-	dsm, err := deepsecurity.NewDSM("username", "Password1", "", "", "Tenant", false)
+	dsm, err := deepsecurity.NewDSM("username", "password", "", "", "Tenant", false)
 	if err != nil{
 		fmt.Println("Error Authenticating", err)
 	}else{

@@ -8,7 +8,7 @@ import (
 func main(){
 
 	// Authenticate against an on-prem DSM
-	dsm, err := deepsecurity.NewDSM("username", "Password1!", "127.0.0.1", "4119", "", false)
+	dsm, err := deepsecurity.NewDSM("username", "password", "127.0.0.1", "4119", "", false)
 	if err != nil{
 		fmt.Println("Error Authenticating", err)
 	}else{

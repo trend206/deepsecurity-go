@@ -304,3 +304,15 @@ func (dsm DSM)HostMoveToHostGroup(hostIDs []int32, hostGroupID int32) (*gowsdlse
 	}
 
 }
+
+
+func (dsm DSM)HostAgentActivate(hosts []int32) (*gowsdlservice.HostAgentActivateResponse, error){
+	haa := gowsdlservice.HostAgentActivate{HostIDs: hosts, SID: dsm.SessionID}
+	resp, err := dsm.SoapClient.HostAgentActivate(&haa)
+
+	if err != nil{
+		return nil, errors.New(fmt.Sprint("Unable to activate host: ", err))
+	}else{
+		return resp, nil
+	}
+}
