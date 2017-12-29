@@ -145,23 +145,6 @@ func (dsm DSM) HostDetailRetrieve(hostID int, hostGroup int, securityProfileID i
 }
 
 
-//does not currently implement custom time ranges
-//timeType "LAST_HOUR", eventOperator="GREATER_THAN", eventID=1
-func (dsm DSM)SystemEventRetrieve(timeType string, hostID int, hostGroupID int, securityProfileId int, hostType string, eventID int,
-	                              includeNonHostEvents bool, eventOperator string) []*gowsdlservice.SystemEventTransport{
-
-
-	 tft := gowsdlservice.TimeFilterTransport{RangeFrom: time.Time{}, RangeTo: time.Time{}, SpecificTime: time.Time{}, Type_: timeType}
-	 hft := gowsdlservice.HostFilterTransport{HostGroupID: int32(hostGroupID), HostID: int32(hostID), SecurityProfileID: int32(securityProfileId), Type_: hostType}
-	 idf := gowsdlservice.IDFilterTransport{Id: int32(eventID), Operator: eventOperator}
-	 ser := gowsdlservice.SystemEventRetrieve{TimeFilter:&tft, HostFilter: &hft, EventIdFilter: &idf, IncludeNonHostEvents: includeNonHostEvents, SID: dsm.SessionID}
-	 resp, err := dsm.SoapClient.SystemEventRetrieve(&ser)
-	if err != nil{
-		log.Println("Error retrieving system event:", err)
-	}
-
-	return resp.SystemEventRetrieveReturn.SystemEvents.Item
-}
 
 
 func (dsm DSM)DPIRuleRetrieve(ruleID int) (*gowsdlservice.DPIRuleTransport, error){
@@ -327,7 +310,7 @@ func (dsm DSM)HostAgentActivate(hosts []int32) (*gowsdlservice.HostAgentActivate
 // hostType: optional. options are "ALL_HOSTS", "HOSTS_IN_GROUP", "HOSTS_USING_SECURITY_PROFILE","HOSTS_IN_GROUP_AND_ALL_SUBGROUPS","SPECIFIC_HOST", "MY_HOSTS"
 //
 // eventOperator: options "GREATER_THAN", "LESS_THAN", "EQUAL". if not set will default to "GREATER_THAN"
-//Note: currently time ranges and specific times do not work
+//Note: specific times do not work
 func (dsm DSM)AntiMalwareEventRetrieve( rangeFrom time.Time, rangeTo time.Time, specificTime time.Time, timeType string,
 	 									hostID int, hostGroupID int, securityProfileID int, hostType string, eventID int,
 										eventOperator string) ([]*gowsdlservice.AntiMalwareEventTransport, error){
@@ -343,6 +326,34 @@ func (dsm DSM)AntiMalwareEventRetrieve( rangeFrom time.Time, rangeTo time.Time, 
 	}else{
 		return resp.AntiMalwareEventRetrieveReturn.AntiMalwareEvents.Item, nil
 	}
+
+}
+
+
+// SystemEventRetrieve retreives system events by time and host filter
+//
+// timeType: options are "LAST_HOUR", "LAST_24_HOURS", "LAST_7_DAYS". if set range_from, range_to, timeType and specificTime are not to be specified.
+//
+// hostType: optional. options are "ALL_HOSTS", "HOSTS_IN_GROUP", "HOSTS_USING_SECURITY_PROFILE","HOSTS_IN_GROUP_AND_ALL_SUBGROUPS","SPECIFIC_HOST", "MY_HOSTS"
+//
+// eventOperator: options "GREATER_THAN", "LESS_THAN", "EQUAL". if not set will default to "GREATER_THAN"
+//Note: specific times do not work
+func (dsm DSM)SystemEventRetrieve(rangeFrom time.Time, rangeTo time.Time, specificTime time.Time, timeType string,
+	                              hostID int, hostGroupID int, securityProfileID int, hostType string, eventID int,
+								  eventOperator string, includeNonHostEvents bool) ([]*gowsdlservice.SystemEventTransport, error){
+
+
+	tft := buildTimeFilterTransport(rangeFrom, rangeTo, specificTime, timeType)
+	hft := builtHostFilterTransport(hostID, hostGroupID, securityProfileID, hostType)
+	idf := gowsdlservice.IDFilterTransport{Id: int32(eventID), Operator: eventOperator}
+	ser := gowsdlservice.SystemEventRetrieve{TimeFilter:&tft, HostFilter: &hft, EventIdFilter: &idf, IncludeNonHostEvents: includeNonHostEvents, SID: dsm.SessionID}
+	resp, err := dsm.SoapClient.SystemEventRetrieve(&ser)
+	if err != nil{
+		return nil, errors.New(fmt.Sprintf("Error retrieving system event:", err))
+	}else{
+		return resp.SystemEventRetrieveReturn.SystemEvents.Item, nil
+	}
+
 
 }
 

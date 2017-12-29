@@ -21,3 +21,4 @@ Examples
 * Create a Host Group - [examples/hostgroupcreate.go](examples/hostgroupcreate.go)
 * Concurrently run DS recommendation scans in goroutines [examples/recoscan.go](examples/recoscan.go)
 * Retrieve AntiMalware events [examples/amevents.go](examples/amevents.go)
+* Retrieve System events [examples/systemevents.go](examples/systemevents.go)
