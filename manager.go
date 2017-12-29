@@ -151,7 +151,7 @@ func (dsm DSM)SystemEventRetrieve(timeType string, hostID int, hostGroupID int, 
 	                              includeNonHostEvents bool, eventOperator string) []*gowsdlservice.SystemEventTransport{
 
 
-	 tft := gowsdlservice.TimeFilterTransport{RangeFrom: "", RangeTo: "", SpecificTime: "", Type_: timeType}
+	 tft := gowsdlservice.TimeFilterTransport{RangeFrom: time.Time{}, RangeTo: time.Time{}, SpecificTime: time.Time{}, Type_: timeType}
 	 hft := gowsdlservice.HostFilterTransport{HostGroupID: int32(hostGroupID), HostID: int32(hostID), SecurityProfileID: int32(securityProfileId), Type_: hostType}
 	 idf := gowsdlservice.IDFilterTransport{Id: int32(eventID), Operator: eventOperator}
 	 ser := gowsdlservice.SystemEventRetrieve{TimeFilter:&tft, HostFilter: &hft, EventIdFilter: &idf, IncludeNonHostEvents: includeNonHostEvents, SID: dsm.SessionID}
@@ -328,13 +328,12 @@ func (dsm DSM)HostAgentActivate(hosts []int32) (*gowsdlservice.HostAgentActivate
 //
 // eventOperator: options "GREATER_THAN", "LESS_THAN", "EQUAL". if not set will default to "GREATER_THAN"
 //Note: currently time ranges and specific times do not work
-func (dsm DSM)AntiMalwareEventRetrieveByHost( rangeFrom time.Time, rangeTo time.Time, specificTime time.Time, timeType string,
+func (dsm DSM)AntiMalwareEventRetrieve( rangeFrom time.Time, rangeTo time.Time, specificTime time.Time, timeType string,
 	 									hostID int, hostGroupID int, securityProfileID int, hostType string, eventID int,
 										eventOperator string) ([]*gowsdlservice.AntiMalwareEventTransport, error){
 
 	tft := buildTimeFilterTransport(rangeFrom, rangeTo, specificTime, timeType)
-	fmt.Println(tft)
-	hft := gowsdlservice.HostFilterTransport{HostID: int32(hostID), Type_: "SPECIFIC_HOST"}
+	hft := builtHostFilterTransport(hostID, hostGroupID, securityProfileID, hostType)
 	eidf := gowsdlservice.IDFilterTransport{Id: int32(eventID), Operator: eventOperator}
 	amer := gowsdlservice.AntiMalwareEventRetrieve{TimeFilter: &tft, HostFilter: &hft, EventIdFilter: &eidf, SID: dsm.SessionID}
 	resp, err := dsm.SoapClient.AntiMalwareEventRetrieve(&amer)
@@ -348,6 +347,25 @@ func (dsm DSM)AntiMalwareEventRetrieveByHost( rangeFrom time.Time, rangeTo time.
 }
 
 
+func builtHostFilterTransport(hostID int, hostGroupID int, securityProfileID int, hostType string) gowsdlservice.HostFilterTransport{
+	hft := gowsdlservice.HostFilterTransport{}
+	if hostID != 0{
+		hft.HostID = int32(hostID)
+		hft.Type_ = "SPECIFIC_HOST"
+	}else if hostGroupID != 0{
+		hft.HostGroupID = int32(hostGroupID)
+		hft.Type_ = "HOSTS_IN_GROUP"
+	}else if securityProfileID != 0{
+		hft.SecurityProfileID = int32(securityProfileID)
+		hft.Type_ = "HOSTS_USING_SECURITY_PROFILE"
+	}else{
+		hft.Type_ = "HOSTS_USING_SECURITY_PROFILE"
+	}
+
+	return hft
+
+}
+
 func buildTimeFilterTransport(rangeFrom time.Time, rangeTo time.Time, specificTime time.Time, timeType string) gowsdlservice.TimeFilterTransport{
 	tft := gowsdlservice.TimeFilterTransport{}
 	if rangeFrom.Year() == 0001 && specificTime.Year() == 001{
@@ -357,13 +375,15 @@ func buildTimeFilterTransport(rangeFrom time.Time, rangeTo time.Time, specificTi
 			tft.Type_ = timeType
 		}
 	}else if rangeFrom.Year() != 0001 && rangeTo.Year() != 0001{
-		tft.RangeFrom = rangeFrom.Format("2006-01-02 15:04:05.999999")
-		tft.RangeTo = rangeTo.Format("2006-01-02 15:04:05.999999")
+		tft.RangeFrom =  rangeFrom//rangeFrom.Format("2006-01-02 15:04:05")
+		tft.RangeTo = rangeTo//rangeTo.Format("2006-01-02 15:04:05")
 		tft.Type_ = "CUSTOM_RANGE"
 	}else if specificTime.Year() != 0001 {
-		tft.SpecificTime = specificTime.Format("2006-01-02 15:04:05.999999")
+		tft.SpecificTime = specificTime//specificTime.Format("2006-01-02 15:04:05")
 		tft.Type_ = "SPECIFIC_TIME"
 	}
 	return tft
 }
+
+
 

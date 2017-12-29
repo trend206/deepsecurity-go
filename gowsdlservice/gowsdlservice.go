@@ -4585,11 +4585,11 @@ type TimeFilterTransport struct {
 
 	*TransportObject
 
-	RangeFrom string `xml:"rangeFrom,omitempty"`
+	RangeFrom time.Time `xml:"rangeFrom,omitempty"`
 
-	RangeTo string `xml:"rangeTo,omitempty"`
+	RangeTo time.Time `xml:"rangeTo,omitempty"`
 
-	SpecificTime string `xml:"specificTime,omitempty"`
+	SpecificTime time.Time `xml:"specificTime,omitempty"`
 
 	Type_ string `xml:"type,omitempty"`
 }
@@ -9608,6 +9608,7 @@ func (s *SOAPClient) Call(soapAction string, request, response interface{}) erro
 		log.Println("empty response")
 		return nil
 	}
+
 
 	//fmt.Println(request)
 	//fmt.Println("PRINTING RAW BODY")
