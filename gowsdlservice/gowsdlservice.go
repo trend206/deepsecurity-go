@@ -1,6 +1,8 @@
 // Several changes have been made to this file from the auto generated gowsdl.
-// Unfortunately many auto generated methods and structs do not map correctly to wsdl definition.
+// Unfortunately several auto generated methods and structs do not map correctly to wsdl definition.
 // You will need to use this .go file.
+
+// conflicts seem to occur around date/times conversion and transport object XMLnamspacing
 package gowsdlservice
 
 import (
@@ -5901,7 +5903,7 @@ type CounterAlertTypeTransport struct {
 }
 
 type AntiMalwareSpywareItemTransport struct {
-	XMLName xml.Name `xml:"urn:Manager AntiMalwareSpywareItemTransport"`
+	XMLName xml.Name `xml:""`
 
 	*TransportObject
 
@@ -5925,13 +5927,13 @@ type AntiMalwareSpywareItemTransport struct {
 }
 
 type ArrayOfAntiMalwareSpywareItemTransport struct {
-	XMLName xml.Name `xml:"urn:Manager ArrayOfAntiMalwareSpywareItemTransport"`
+	XMLName xml.Name `xml:""`
 
 	Item []*AntiMalwareSpywareItemTransport `xml:"item,omitempty"`
 }
 
 type AntiMalwareEventTransport struct {
-	XMLName xml.Name `xml:"urn:Manager AntiMalwareEventTransport"`
+	XMLName xml.Name `xml:""`
 
 	*TransportObject
 
@@ -5939,7 +5941,7 @@ type AntiMalwareEventTransport struct {
 
 	AntiMalwareEventID int64 `xml:"antiMalwareEventID,omitempty"`
 
-	EndTime time.Time `xml:"endTime,omitempty"`
+	EndTime string `xml:"endTime,omitempty"`
 
 	ErrorCode int32 `xml:"errorCode,omitempty"`
 
@@ -5967,7 +5969,7 @@ type AntiMalwareEventTransport struct {
 
 	SpywareItems *ArrayOfAntiMalwareSpywareItemTransport `xml:"spywareItems,omitempty"`
 
-	StartTime time.Time `xml:"startTime,omitempty"`
+	StartTime string `xml:"startTime,omitempty"`
 
 	Tags string `xml:"tags,omitempty"`
 
@@ -5979,13 +5981,13 @@ type AntiMalwareEventTransport struct {
 }
 
 type ArrayOfAntiMalwareEventTransport struct {
-	XMLName xml.Name `xml:"urn:Manager ArrayOfAntiMalwareEventTransport"`
+	XMLName xml.Name `xml:""`
 
 	Item []*AntiMalwareEventTransport `xml:"item,omitempty"`
 }
 
 type AntiMalwareEventListTransport struct {
-	XMLName xml.Name `xml:"urn:Manager AntiMalwareEventListTransport"`
+	XMLName xml.Name `xml:""`
 
 	*TruncatableListTransport
 

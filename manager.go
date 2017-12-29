@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"github.com/levigross/grequests"
 	"errors"
+	"time"
+	"strings"
 )
 
 
@@ -43,8 +45,8 @@ func NewDSM(username string, password string, host string, port string, tenant s
 	dsm.RestClient = http.Client{Transport: tr}
 	sessionID, err := authenticate(username, password, &dsm, verifySSL)
 
-	if err != nil{
-		return DSM{}, err
+	if err != nil || strings.Contains(sessionID, "error"){
+		return DSM{}, errors.New(sessionID)
 	}else{
 		dsm.SessionID = sessionID
 		return dsm, nil
@@ -316,3 +318,52 @@ func (dsm DSM)HostAgentActivate(hosts []int32) (*gowsdlservice.HostAgentActivate
 		return resp, nil
 	}
 }
+
+
+// AntiMalwareEventRetrieve retreives AM events by time and host filter
+//
+// timeType: options are "LAST_HOUR", "LAST_24_HOURS", "LAST_7_DAYS". if set range_from, range_to, timeType and specificTime are not to be specified.
+//
+// hostType: optional. options are "ALL_HOSTS", "HOSTS_IN_GROUP", "HOSTS_USING_SECURITY_PROFILE","HOSTS_IN_GROUP_AND_ALL_SUBGROUPS","SPECIFIC_HOST", "MY_HOSTS"
+//
+// eventOperator: options "GREATER_THAN", "LESS_THAN", "EQUAL". if not set will default to "GREATER_THAN"
+//Note: currently time ranges and specific times do not work
+func (dsm DSM)AntiMalwareEventRetrieveByHost( rangeFrom time.Time, rangeTo time.Time, specificTime time.Time, timeType string,
+	 									hostID int, hostGroupID int, securityProfileID int, hostType string, eventID int,
+										eventOperator string) ([]*gowsdlservice.AntiMalwareEventTransport, error){
+
+	tft := buildTimeFilterTransport(rangeFrom, rangeTo, specificTime, timeType)
+	fmt.Println(tft)
+	hft := gowsdlservice.HostFilterTransport{HostID: int32(hostID), Type_: "SPECIFIC_HOST"}
+	eidf := gowsdlservice.IDFilterTransport{Id: int32(eventID), Operator: eventOperator}
+	amer := gowsdlservice.AntiMalwareEventRetrieve{TimeFilter: &tft, HostFilter: &hft, EventIdFilter: &eidf, SID: dsm.SessionID}
+	resp, err := dsm.SoapClient.AntiMalwareEventRetrieve(&amer)
+
+	if err != nil{
+		return nil, errors.New(fmt.Sprint("Unable to retrieve AM events: ", err))
+	}else{
+		return resp.AntiMalwareEventRetrieveReturn.AntiMalwareEvents.Item, nil
+	}
+
+}
+
+
+func buildTimeFilterTransport(rangeFrom time.Time, rangeTo time.Time, specificTime time.Time, timeType string) gowsdlservice.TimeFilterTransport{
+	tft := gowsdlservice.TimeFilterTransport{}
+	if rangeFrom.Year() == 0001 && specificTime.Year() == 001{
+		if timeType == "" {
+			tft.Type_ = "LAST_HOUR"
+		}else{
+			tft.Type_ = timeType
+		}
+	}else if rangeFrom.Year() != 0001 && rangeTo.Year() != 0001{
+		tft.RangeFrom = rangeFrom.Format("2006-01-02 15:04:05.999999")
+		tft.RangeTo = rangeTo.Format("2006-01-02 15:04:05.999999")
+		tft.Type_ = "CUSTOM_RANGE"
+	}else if specificTime.Year() != 0001 {
+		tft.SpecificTime = specificTime.Format("2006-01-02 15:04:05.999999")
+		tft.Type_ = "SPECIFIC_TIME"
+	}
+	return tft
+}
+
