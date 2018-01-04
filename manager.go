@@ -3,6 +3,7 @@ package deepsecurity
 
 import (
 	"crypto/tls"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -84,18 +85,27 @@ func authenticate(username string, password string, dsm *DSM, verifySSL bool) (s
 
 // GetTrustedUpdateMode gets the settings for trusted update mode on a host.
 // return true of false based on http response code
-func (dsm DSM) GetTrustedUpdateMode(hostID int) (string, bool) {
+func (dsm DSM) GetTrustedUpdateMode(hostID int) (TrustedUpdateModeResponse, bool) {
+	var describeTUResponse JsonDescribeTrustedUpdateModeResponse
 	url := fmt.Sprintf("%shosts/%d/trusted-update-mode", dsm.RestURL, hostID)
 	cookies := []*http.Cookie{{Name: "sID", Value: dsm.SessionID}}
 	resp, err := grequests.Get(url, &grequests.RequestOptions{HTTPClient: &dsm.RestClient, Cookies: cookies})
 
-	if err != nil{
-		return fmt.Sprintf("Error getting trusted update mode for host %d\n", hostID), false
-	}else if resp.Ok != true{
-		return fmt.Sprintf(("Request did not return OK")), false
+	if err != nil {
+		log.Printf("Error getting trusted update mode for host %d\n", hostID)
+		return TrustedUpdateModeResponse{}, false
+	} else if resp.Ok != true {
+		log.Printf("Request did not return OK")
+		return TrustedUpdateModeResponse{}, false
 	}
 
-	return resp.String(), true
+	err = json.NewDecoder(strings.NewReader(resp.String())).Decode(&describeTUResponse)
+	if err != nil {
+		log.Printf("Error Parsing Json object")
+		return TrustedUpdateModeResponse{}, false
+	}
+
+	return describeTUResponse.DescribeTrustedUpdateModeResponse, true
 }
 
 // EndSession logs out of the session with the DSM
