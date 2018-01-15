@@ -5185,9 +5185,9 @@ type HostStatusTransport struct {
 
 	OverallIntegrityMonitoringStatus string `xml:"overallIntegrityMonitoringStatus,omitempty"`
 
-	OverallLastSuccessfulCommunication time.Time `xml:"overallLastSuccessfulCommunication,omitempty"`
+	OverallLastSuccessfulCommunication string `xml:"overallLastSuccessfulCommunication,omitempty"`
 
-	OverallLastSuccessfulUpdate time.Time `xml:"overallLastSuccessfulUpdate,omitempty"`
+	OverallLastSuccessfulUpdate string `xml:"overallLastSuccessfulUpdate,omitempty"`
 
 	OverallLogInspectionStatus string `xml:"overallLogInspectionStatus,omitempty"`
 

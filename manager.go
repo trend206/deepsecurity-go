@@ -374,7 +374,7 @@ func builtHostFilterTransport(hostID int, hostGroupID int, securityProfileID int
 		hft.SecurityProfileID = int32(securityProfileID)
 		hft.Type_ = "HOSTS_USING_SECURITY_PROFILE"
 	} else {
-		hft.Type_ = "HOSTS_USING_SECURITY_PROFILE"
+		hft.Type_ = "ALL_HOSTS"
 	}
 
 	return hft
