@@ -5125,9 +5125,9 @@ type ProtectionStatusTransport struct {
 
 	IntegrityMonitoringStatus string `xml:"integrityMonitoringStatus,omitempty"`
 
-	LastSuccessfulCommunication time.Time `xml:"lastSuccessfulCommunication,omitempty"`
+	LastSuccessfulCommunication string `xml:"lastSuccessfulCommunication,omitempty"`
 
-	LastSuccessfulUpdate time.Time `xml:"lastSuccessfulUpdate,omitempty"`
+	LastSuccessfulUpdate string `xml:"lastSuccessfulUpdate,omitempty"`
 
 	LogInspectionStatus string `xml:"logInspectionStatus,omitempty"`
 
