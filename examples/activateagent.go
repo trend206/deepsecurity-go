@@ -7,7 +7,7 @@ import (
 
 func main(){
 	//Authenticate against DSas
-	dsm, err := deepsecurity.NewDSM("masteradmin", "trendmicro", "10.45.66.20", "4119", "", false)
+	dsm, err := deepsecurity.NewDSM("username", "password", "10.45.22.20", "4119", "", false)
 	defer dsm.EndSession()
 	if err != nil{
 		fmt.Println("Error Authenticating", err)
