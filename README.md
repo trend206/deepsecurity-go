@@ -4,7 +4,7 @@ Status: Experimental<br/>
 
 Documentation
 ----
-https://godoc.org/github.com/jeffthorne/deepsecurity-go<br/>
+https://godoc.org/github.com/trend206/deepsecurity-go<br/>
 
 Installation
 ----
