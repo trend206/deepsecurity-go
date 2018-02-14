@@ -4895,7 +4895,7 @@ type DPIRuleTransport struct {
 
 	IncludePacketData bool `xml:"includePacketData,omitempty"`
 
-	Issued time.Time `xml:"issued,omitempty"`
+	Issued string `xml:"issued,omitempty"`
 
 	PatternAction *EnumDPIRuleAction `xml:"patternAction,omitempty"`
 

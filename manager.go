@@ -180,6 +180,21 @@ func (dsm DSM) DPIRuleRetrieve(ruleID int) (*gowsdlservice.DPIRuleTransport, err
 	}
 }
 
+func (dsm DSM) DPIRuleRetrieveAll() ([]*gowsdlservice.DPIRuleTransport, error) {
+	dpiRuleRetrieveAll := gowsdlservice.DPIRuleRetrieveAll{SID: dsm.SessionID}
+	resp, err := dsm.SoapClient.DPIRuleRetrieveAll(&dpiRuleRetrieveAll)
+	if err != nil {
+		log.Println("Error could not retrieve dpi rule:", err)
+	}
+
+	if resp == nil {
+		err = errors.New(fmt.Sprintf("Error retrieving all dpi rules"))
+		return nil, err
+	} else {
+		return resp.DPIRuleRetrieveAllReturn, err
+	}
+}
+
 // HostGroupCreate creates a host group. Pass -1 for parentGroupId if not associated with a parent group.
 // If external is false externalID is ignored.
 func (dsm DSM) HostGroupCreate(name string, external bool, externalID string, parentGroupId int32) (*gowsdlservice.HostGroupTransport, error) {
