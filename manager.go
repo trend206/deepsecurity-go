@@ -398,7 +398,11 @@ func builtHostFilterTransport(hostID int, hostGroupID int, securityProfileID int
 
 func buildTimeFilterTransport(rangeFrom time.Time, rangeTo time.Time, specificTime time.Time, timeType string) gowsdlservice.TimeFilterTransport {
 	tft := gowsdlservice.TimeFilterTransport{}
-	if rangeFrom.Year() == 0001 && specificTime.Year() == 001 {
+
+	if rangeFrom == (time.Time{}) && rangeTo == (time.Time{}){
+		fmt.Println("IN yoooo")
+		tft.Type_ = timeType
+	}else if rangeFrom.Year() == 0001 && specificTime.Year() == 001 {
 		if timeType == "" {
 			tft.Type_ = "LAST_HOUR"
 		} else {
