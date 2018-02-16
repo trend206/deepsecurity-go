@@ -400,7 +400,6 @@ func buildTimeFilterTransport(rangeFrom time.Time, rangeTo time.Time, specificTi
 	tft := gowsdlservice.TimeFilterTransport{}
 
 	if rangeFrom == (time.Time{}) && rangeTo == (time.Time{}){
-		fmt.Println("IN yoooo")
 		tft.Type_ = timeType
 	}else if rangeFrom.Year() == 0001 && specificTime.Year() == 001 {
 		if timeType == "" {
