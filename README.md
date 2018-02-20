@@ -9,7 +9,7 @@ https://godoc.org/github.com/trend206/deepsecurity-go<br/>
 Installation
 ----
 
-Install: go get -u github.com/jeffthorne/deepsecurity-go
+Install: go get -u github.com/trend206/deepsecurity-go
 
 
 Examples
