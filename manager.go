@@ -10,8 +10,7 @@ import (
 	"net/http"
 	"strings"
 	"time"
-
-	"github.com/jeffthorne/deepsecurity-go/gowsdlservice"
+	"github.com/trend206/deepsecurity-go/gowsdlservice"
 	"github.com/levigross/grequests"
 )
 

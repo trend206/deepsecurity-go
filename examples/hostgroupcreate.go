@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/jeffthorne/deepsecurity-go"
+	"github.com/trend206/deepsecurity-go"
 )
 
 func main() {

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/jeffthorne/deepsecurity-go"
+	"github.com/trend206/deepsecurity-go"
 	"fmt"
 	"time"
 	"sync"
-	"github.com/jeffthorne/deepsecurity-go/gowsdlservice"
+	"github.com/trend206/deepsecurity-go/gowsdlservice"
 )
 
 

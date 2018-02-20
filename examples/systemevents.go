@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/jeffthorne/deepsecurity-go"
+	"github.com/trend206/deepsecurity-go"
 	"fmt"
 	"time"
 
