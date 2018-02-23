@@ -325,6 +325,18 @@ func (dsm DSM) HostAgentActivate(hosts []int32) (*gowsdlservice.HostAgentActivat
 	}
 }
 
+func (dsm DSM) ApplicationTypeRetrieveAll() ([]*gowsdlservice.ApplicationTypeTransport, error){
+	atra := gowsdlservice.ApplicationTypeRetrieveAll{SID: dsm.SessionID}
+	resp, err := dsm.SoapClient.ApplicationTypeRetrieveAll(&atra)
+
+	if err != nil {
+		return nil, errors.New(fmt.Sprint("Unable to retrieve Application Types: ", err))
+	}
+
+	fmt.Println(resp)
+	return resp.ApplicationTypeRetrieveAllReturn, nil
+}
+
 // AntiMalwareEventRetrieve retreives AM events by time and host filter
 //
 // timeType: options are "LAST_HOUR", "LAST_24_HOURS", "LAST_7_DAYS". if set range_from, range_to, timeType and specificTime are not to be specified.
@@ -416,3 +428,5 @@ func buildTimeFilterTransport(rangeFrom time.Time, rangeTo time.Time, specificTi
 	}
 	return tft
 }
+
+

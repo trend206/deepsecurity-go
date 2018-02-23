@@ -5459,13 +5459,13 @@ type CounterTransport struct {
 }
 
 type ProtocolIcmp struct {
-	XMLName xml.Name `xml:"urn:Manager ProtocolIcmp"`
+	XMLName xml.Name `xml:`
 
 	Type_ *EnumProtocolIcmpType `xml:"type,omitempty"`
 }
 
 type ProtocolPortBased struct {
-	XMLName xml.Name `xml:"urn:Manager ProtocolPortBased"`
+	XMLName xml.Name `xml:`
 
 	PortListID int32 `xml:"portListID,omitempty"`
 
@@ -5475,7 +5475,7 @@ type ProtocolPortBased struct {
 }
 
 type ApplicationTypeTransport struct {
-	XMLName xml.Name `xml:"urn:Manager ApplicationTypeTransport"`
+	XMLName xml.Name `xml:`
 
 	*ConfigurationTransport
 
