@@ -333,7 +333,6 @@ func (dsm DSM) ApplicationTypeRetrieveAll() ([]*gowsdlservice.ApplicationTypeTra
 		return nil, errors.New(fmt.Sprint("Unable to retrieve Application Types: ", err))
 	}
 
-	fmt.Println(resp)
 	return resp.ApplicationTypeRetrieveAllReturn, nil
 }
 

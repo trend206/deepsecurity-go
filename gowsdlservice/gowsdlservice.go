@@ -5483,15 +5483,15 @@ type ApplicationTypeTransport struct {
 
 	Authoritative bool `xml:"authoritative,omitempty"`
 
-	Direction *EnumDirection `xml:"direction,omitempty"`
+	Direction string `xml:"direction,omitempty"`
 
 	IgnoreRecommendations bool `xml:"ignoreRecommendations,omitempty"`
 
-	ProtocolIcmp *ProtocolIcmp `xml:"protocolIcmp,omitempty"`
+	ProtocolIcmp string `xml:"protocolIcmp,omitempty"`
 
-	ProtocolPortBased *ProtocolPortBased `xml:"protocolPortBased,omitempty"`
+	ProtocolPortBased string `xml:"protocolPortBased,omitempty"`
 
-	ProtocolType *EnumApplicationTypeProtocolType `xml:"protocolType,omitempty"`
+	ProtocolType string `xml:"protocolType,omitempty"`
 }
 
 type SecurityUpdateTransport struct {

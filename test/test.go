@@ -17,7 +17,7 @@ func main(){
 
 
 	for _, at := range ats{
-		fmt.Println(at.Name)
+		fmt.Println(at.Authoritative)
 	}
 
 }
